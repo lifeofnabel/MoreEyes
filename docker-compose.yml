@@ -1,18 +1,44 @@
 # MoreEyes - lokaler Kamera-Livestream (nur Heimnetz)
-# Sprint 1: nur go2rtc. Sprint 2 ergaenzt Reverse-Proxy mit Login + Webseite.
+#
+# Architektur (Sprint 2): go2rtc hat AUSSER dem WebRTC-Medienport keinen Port im LAN offen.
+# API und WebSocket-Signalisierung laufen nur ueber den "web"-Container, der den Login prueft.
+# Caddy ist der einzige Eintrittspunkt ins LAN (Port 80).
 services:
   go2rtc:
-    image: alexxit/go2rtc:1.9.9
+    image: alexxit/go2rtc:1.9.15
     container_name: moreeyes-go2rtc
     restart: unless-stopped
     env_file: .env
     volumes:
       - ./go2rtc/go2rtc.yaml:/config/go2rtc.yaml:ro
     ports:
-      # Sprint 1: Web-UI/API nur auf localhost des Hosts (kein LAN-Zugriff ohne Login)
-      - "127.0.0.1:1984:1984"
-      # RTSP-Re-Stream fuer VLC-Gegenprobe, ebenfalls nur localhost
-      - "127.0.0.1:8554:8554"
-      # WebRTC (Medienpfad); Sprint 2 stellt das auf LAN um
+      # Nur der WebRTC-Medienport muss im LAN erreichbar sein (fuer die eigentliche
+      # Video-/Audio-Uebertragung nach erfolgreicher, authentifizierter Signalisierung).
       - "8555:8555/tcp"
       - "8555:8555/udp"
+
+  web:
+    build: ./web
+    container_name: moreeyes-web
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      GO2RTC_URL: "http://go2rtc:1984"
+    depends_on:
+      - go2rtc
+    # Kein Host-Port: nur Caddy erreicht diesen Dienst.
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: moreeyes-caddy
+    restart: unless-stopped
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+volumes:
+  caddy_data:

@@ -1,14 +1,19 @@
 api:
-  listen: ":1984"
+  listen: ":1984"   # Sprint 2: im Compose-Netzwerk NICHT auf den Host veroeffentlicht,
+                     # nur vom web-Container ueber den authentifizierten Proxy erreichbar.
 
 rtsp:
-  listen: ":8554"
+  listen: ":8554"    # dito: kein Host-Port, nur intern (z.B. fuer spaetere Aufnahme-Container)
 
 webrtc:
   listen: ":8555"
-  # Sprint 2: LAN-IP des Hosts hier eintragen (Docker-NAT), z.B. - 192.168.1.50:8555
+  candidates:
+    # Muss die Adresse sein, unter der ANDERE GERAETE im LAN diesen Host erreichen.
+    # LAN_HOST_IP kommt aus .env - anpassen, wenn sich die Netzwerk-Umgebung aendert
+    # (Hotspot -> echtes Heim-WLAN -> KI-Server).
+    - ${LAN_HOST_IP}:8555
 
 streams:
-  # CAM_MAIN_URL kommt aus .env (enthaelt ggf. Zugangsdaten) - nie committen
+  # CAM_MAIN_URL/CAM_SUB_URL kommen aus .env (enthalten Zugangsdaten) - nie committen
   cam1: ${CAM_MAIN_URL}
   cam1_sub: ${CAM_SUB_URL}

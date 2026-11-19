@@ -1,0 +1,86 @@
+:root {
+  --bg: #0b0f14;
+  --panel: #121820;
+  --panel-border: #1f2b38;
+  --text: #e6edf3;
+  --muted: #8794a1;
+  --accent: #3fb2ff;
+  --accent-dim: #1f6f9c;
+  --danger: #ff5d5d;
+  --ok: #3ddc84;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+header.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, #0f1620, #0b0f14);
+}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand .name { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.02em; }
+.brand .name .jaj { color: var(--accent); }
+.brand .sub { color: var(--muted); font-size: 0.8rem; }
+
+button {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+button:hover { border-color: var(--accent-dim); }
+button.ghost { background: transparent; }
+button.primary { background: var(--accent); color: #04121c; border-color: var(--accent); font-weight: 600; }
+button.primary:hover { filter: brightness(1.08); }
+
+main { padding: 20px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+.tile {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.tile .video-wrap { position: relative; aspect-ratio: 16/9; background: #000; }
+.tile video-rtc, .tile video { width: 100%; height: 100%; display: block; object-fit: contain; background: #000; }
+
+.badge {
+  position: absolute; top: 10px; left: 10px;
+  padding: 3px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 600;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(2px);
+}
+.badge.live { color: var(--ok); }
+.badge.wait { color: #f4c152; }
+.badge.err { color: var(--danger); }
+
+.tile-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; gap: 10px; flex-wrap: wrap;
+}
+.tile-footer .label { font-weight: 600; }
+.tile-footer .controls { display: flex; gap: 8px; }
+.tile-footer button { padding: 6px 10px; font-size: 0.8rem; }
+
+.empty-hint { color: var(--muted); margin-top: 40px; text-align: center; }

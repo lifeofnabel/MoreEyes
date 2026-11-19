@@ -1,0 +1,6 @@
+# Sprint 2: reines HTTP im LAN (siehe PROJEKT-LOG, Antwort #4).
+# Spaeter fuer sicheren Internet-Fernzugriff: eigener Block mit automatischem HTTPS
+# ueber einen Tunnel-Anbieter - siehe README, Abschnitt "Spaeter".
+:80 {
+	reverse_proxy web:3000
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jajehelp · Kameras</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="name"><span class="jaj">jajehelp</span> Kameras</span>
+      <span class="sub" id="whoami"></span>
+    </div>
+    <button class="ghost" id="logout">Abmelden</button>
+  </header>
+  <main>
+    <div class="grid" id="grid"></div>
+    <p class="empty-hint" id="emptyHint" hidden>Keine Kamera konfiguriert. Siehe web/config/cameras.json.</p>
+  </main>
+
+  <script type="module" src="/vendor/video-rtc.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

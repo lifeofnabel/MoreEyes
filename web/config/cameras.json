@@ -1,0 +1,8 @@
+[
+  {
+    "id": "cam1",
+    "label": "Kamera 1",
+    "defaultStream": "cam1_sub",
+    "streams": { "sd": "cam1_sub", "hd": "cam1" }
+  }
+]

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jajehelp · Kamera-Login</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { --bg:#0b0f14; --panel:#121820; --border:#1f2b38; --text:#e6edf3; --muted:#8794a1; --accent:#3fb2ff; --danger:#ff5d5d; }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+         background:var(--bg); color:var(--text); font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  form { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:32px;
+         width:min(340px, 90vw); display:flex; flex-direction:column; gap:14px; }
+  h1 { margin:0 0 4px; font-size:1.2rem; }
+  h1 .jaj { color:var(--accent); }
+  p.sub { margin:0 0 10px; color:var(--muted); font-size:0.85rem; }
+  label { font-size:0.8rem; color:var(--muted); }
+  input { background:#0b0f14; border:1px solid var(--border); border-radius:10px; color:var(--text);
+          padding:10px 12px; font-size:1rem; }
+  input:focus { outline:2px solid var(--accent); }
+  button { background:var(--accent); color:#04121c; border:none; border-radius:10px; padding:11px;
+           font-weight:700; font-size:1rem; cursor:pointer; margin-top:6px; }
+  button:disabled { opacity:0.6; cursor:default; }
+  .error { color:var(--danger); font-size:0.85rem; min-height:1.1em; }
+</style>
+</head>
+<body>
+  <form id="f" autocomplete="off">
+    <div>
+      <h1><span class="jaj">jajehelp</span> · Kamera</h1>
+      <p class="sub">Nur im Heimnetz. Zugang mit deinem Admin-Account.</p>
+    </div>
+    <div>
+      <label for="u">Benutzername</label>
+      <input id="u" name="username" autocomplete="username" required autofocus>
+    </div>
+    <div>
+      <label for="p">Passwort</label>
+      <input id="p" name="password" type="password" autocomplete="current-password" required>
+    </div>
+    <div class="error" id="err"></div>
+    <button id="btn" type="submit">Anmelden</button>
+  </form>
+  <script>
+    const f = document.getElementById('f');
+    const err = document.getElementById('err');
+    const btn = document.getElementById('btn');
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.textContent = '';
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('u').value,
+            password: document.getElementById('p').value,
+          }),
+        });
+        if (res.ok) { location.href = '/'; return; }
+        const data = await res.json().catch(() => ({}));
+        err.textContent = data.error || 'Anmeldung fehlgeschlagen.';
+      } catch {
+        err.textContent = 'Server nicht erreichbar.';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
