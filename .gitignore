@@ -1,0 +1,7 @@
+.env
+*.pcapng
+*.etl
+secrets/
+node_modules/
+bin/*.exe
+bin/*.zip

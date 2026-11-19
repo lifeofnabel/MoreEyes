@@ -1,0 +1,18 @@
+# MoreEyes - lokaler Kamera-Livestream (nur Heimnetz)
+# Sprint 1: nur go2rtc. Sprint 2 ergaenzt Reverse-Proxy mit Login + Webseite.
+services:
+  go2rtc:
+    image: alexxit/go2rtc:1.9.9
+    container_name: moreeyes-go2rtc
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./go2rtc/go2rtc.yaml:/config/go2rtc.yaml:ro
+    ports:
+      # Sprint 1: Web-UI/API nur auf localhost des Hosts (kein LAN-Zugriff ohne Login)
+      - "127.0.0.1:1984:1984"
+      # RTSP-Re-Stream fuer VLC-Gegenprobe, ebenfalls nur localhost
+      - "127.0.0.1:8554:8554"
+      # WebRTC (Medienpfad); Sprint 2 stellt das auf LAN um
+      - "8555:8555/tcp"
+      - "8555:8555/udp"

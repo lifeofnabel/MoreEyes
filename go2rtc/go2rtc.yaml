@@ -1,0 +1,14 @@
+api:
+  listen: ":1984"
+
+rtsp:
+  listen: ":8554"
+
+webrtc:
+  listen: ":8555"
+  # Sprint 2: LAN-IP des Hosts hier eintragen (Docker-NAT), z.B. - 192.168.1.50:8555
+
+streams:
+  # CAM_MAIN_URL kommt aus .env (enthaelt ggf. Zugangsdaten) - nie committen
+  cam1: ${CAM_MAIN_URL}
+  cam1_sub: ${CAM_SUB_URL}
